@@ -1,0 +1,13 @@
+# vim
+*~
+*.swp
+*.swo
+
+# python
+**/__pycache__/*
+
+# test db
+*.sqlite
+
+#
+**/logs/*

@@ -1,0 +1,25 @@
+from fastbg.db import create_db
+from fastbg.conf import settings
+import sys
+import os
+
+
+def get_command(command: list = sys.argv[1]):
+    """Macros to maange the db"""
+    if command == "shell":
+        import fastbg.test.shell
+
+    elif command == "migrate":
+        create_db(settings.DATABASES["default"]["engine"])
+
+    elif command == "test":
+        from fastbg.test import test_db
+
+        test_db.run()
+
+    elif command == "runserver":
+        os.system("uvicorn fastbg.server:app --port 5000 --reload")
+
+
+if __name__ == "__main__":
+    get_command()
