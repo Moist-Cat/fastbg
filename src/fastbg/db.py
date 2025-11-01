@@ -6,9 +6,8 @@ from datetime import datetime
 import re
 
 from sqlalchemy.orm import declarative_base, relationship, as_declarative, declared_attr
-from sqlalchemy import Column, Table
-from sqlalchemy import create_engine
-from sqlalchemy import DateTime, Integer, Float, String, Text, ForeignKey
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy import DateTime, Integer, Float, String, Text, ForeignKey, Column, Table
 
 from fastbg.conf import settings
 
@@ -54,3 +53,20 @@ class User(Base):
 
 class Post(Base):
     content = String()
+
+async def create_db(name=settings.DATABASES["default"]["engine"]):
+    engine = create_async_engine(name)
+    
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    
+    print("INFO - Created tables")
+    await async_engine.dispose()
+
+async def drop_db(name=settings.DATABASES["default"]["engine"]):
+    engine = create_async_engine(name)
+
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+
+    await engine.dispose()
