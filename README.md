@@ -13,7 +13,7 @@ A modern, async FastAPI backend with automatic CRUD generation, authentication, 
 ### Prerequisites
 
 - Docker and Docker Compose
-- Python 3.12 (for local development)
+- Python 3.12
 
 ### Using Docker
 
