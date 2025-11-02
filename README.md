@@ -19,7 +19,7 @@ A modern, async FastAPI backend with automatic CRUD generation, authentication, 
 
 1. **Clone and setup:**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Moist-Cat/fastbg/
    cd fastbg
    docker-compose up
    ```
