@@ -65,7 +65,7 @@ class Base(TsMixin):
             column: getattr(self, column) for column in self.__table__.columns.keys()
         }
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
 
     def __str__(self):
         return f"[{self.__class__.__name__}] ({self.as_dict()})"
@@ -87,8 +87,8 @@ Base.metadata = MetaData(
 
 
 class PostTags(Base):
-    post_id = Column(Integer, ForeignKey("post.id"), primary_key=True)
-    tag_id = Column(Integer, ForeignKey("tag.id"), primary_key=True)
+    post_id = Column(Integer, ForeignKey("post.id"))
+    tag_id = Column(Integer, ForeignKey("tag.id"))
 
 
 class User(Base, SoftDeleteMixin):
