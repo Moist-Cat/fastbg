@@ -54,9 +54,13 @@ async def get_current_user(
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
-    except Exception as e:
-        print(e)
-        raise credentials_exception
+    except (
+        jwt.ExpiredSignatureError,
+        jwt.InvalidIssuerError,
+        jwt.InvalidAudienceError,
+        jwt.MissingRequiredClaimError,
+    ) as e:
+        raise credentials_exception from e
 
     result = await db.execute(base_query(User).where(User.name == username))
     user = result.scalar_one_or_none()

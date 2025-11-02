@@ -1,4 +1,3 @@
-
 import logging
 from functools import wraps
 
@@ -58,7 +57,7 @@ def make_crud_router(
     disabled: Dict[str, str] = None,
 ):
     enable_soft_delete = hasattr(model, "is_soft_deleted")
-    exclude_fields = (exclude_fields or [])
+    exclude_fields = exclude_fields or []
     schema = schema or sqlalchemy_to_pydantic(model, exclude=exclude_fields)
 
     disabled = disabled or set()
