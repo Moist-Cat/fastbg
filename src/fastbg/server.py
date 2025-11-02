@@ -1,20 +1,39 @@
-import os
-import hashlib
-from multiprocessing import Process
+import time
+import logging
+from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
+from fastbg.db import create_db_sync
+from fastbg.router import ROUTERS
 from fastbg.conf import settings
-from fastbg.api import get_db
-from fastbg.router import make_crud_router
-from fastbg.db import User, Post
+
+logger = logging.getLogger("global")
 
 app = FastAPI(title="FastBG")
+
+DB = settings.DATABASES["default"]
+if "path" in DB:
+    db_path = Path(DB["path"])
+    if not db_path.exists():
+        logger.info("Creating development database")
+        create_db_sync(DB["sync_engine"])
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.perf_counter()
+    response = await call_next(request)
+    process_time = time.perf_counter() - start_time
+    msg = f"Process time: {process_time}"
+    print(msg)
+    response.headers["X-Process-Time"] = str(process_time)
+    return response
 
 
 @app.get("/")
 async def index():
     return {"status": "OK"}
 
-app.include_router(make_crud_router(User))
-app.include_router(make_crud_router(Post))
+
+for router in ROUTERS:
+    app.include_router(router)

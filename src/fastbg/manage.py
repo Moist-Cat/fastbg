@@ -10,7 +10,8 @@ def get_command(command: list = sys.argv[1]):
         import fastbg.test.shell
 
     elif command == "migrate":
-        import asyncio;
+        import asyncio
+
         asyncio.run(create_db(settings.DATABASES["default"]["engine"]))
 
     elif command == "test":

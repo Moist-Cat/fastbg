@@ -5,6 +5,8 @@ import sys
 BASE_DIR = Path(__file__).parent.parent
 CURR_DIR = Path().cwd()
 
+SECRET_KEY = "PYPPbMsYt9JzSfuNi80mj8nW3kh2IiuLMAQdOcK4jTu3n9FORLSyVdmzc7V4K9KUDuIUJ4f"
+
 # Config
 DEBUG = False
 

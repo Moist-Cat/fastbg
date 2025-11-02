@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  fastbg-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastbg-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - FASTBG_SETTINGS_MODULE=fastbg.conf.dev
+      - DEBUG=true
+    volumes:
+      - ./src/fastbg:/app/fastbg:ro
+      - ./alembic:/app/alembic:ro
+      - ./scripts:/app/scripts:ro
+
+volumes:
+  fastbg_data:
+    driver: local
