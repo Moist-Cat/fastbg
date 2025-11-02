@@ -191,7 +191,7 @@ def make_crud_router(
 
                 if not hard:
                     db_item.soft_delete()
-                    db.commit()
+                    await db.commit()
                     return {"message": "Item soft deleted successfully"}
                 else:
                     await db.delete(db_item)

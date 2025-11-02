@@ -1,7 +1,8 @@
+import os
 from fastbg.conf._base import *
 
 # Paths
-TEST_DIR = Path(__file__).parent.parent / "test"
+TEST_DIR = Path(os.getenv("TEST_DIR", Path(__file__).parent.parent / "test"))
 
 # Config
 DEBUG = True
