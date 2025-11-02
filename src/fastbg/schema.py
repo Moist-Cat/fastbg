@@ -66,7 +66,6 @@ def sqlalchemy_to_pydantic(
                     if isinstance(pattern, (str, re.Pattern)):
                         field_config["pattern"] = pattern
 
-
                 # optional fields
                 default = None
                 if all_optional:

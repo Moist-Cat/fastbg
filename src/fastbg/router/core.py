@@ -33,6 +33,8 @@ def protected(func):
     async def wrapper(*args, **kwargs):
         try:
             return await func(*args, **kwargs)
+        except HTTPException as e:
+            raise
         except Exception as e:
             log.error(f"Error: {e}")
             # rollback is done in api.py
@@ -57,9 +59,9 @@ def make_crud_router(
     dependencies: Dict[str, str] = None,
     disabled: Dict[str, str] = None,
 ):
-    exclude_fields = exclude_fields or []
-    schema = schema or sqlalchemy_to_pydantic(model, exclude=exclude_fields)
     enable_soft_delete = hasattr(model, "is_soft_deleted")
+    exclude_fields = (exclude_fields or [])
+    schema = schema or sqlalchemy_to_pydantic(model, exclude=exclude_fields)
 
     disabled = disabled or set()
 
@@ -136,7 +138,6 @@ def make_crud_router(
     if not CrudEndpoint.UPDATE in disabled:
 
         @router.put("/{item_id}", response_model=update_schema)
-        @is_owner(model, owner_field="author_id")
         @protected
         async def update_item(
             item_id: int,

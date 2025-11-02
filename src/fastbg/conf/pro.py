@@ -1,14 +1,21 @@
 from fastbg.conf._base import *
-import os
+
+# Paths
+TEST_DIR = Path(__file__).parent.parent / "test"
 
 # Config
-DEBUG = False
-SECRET_KEY = os.getenv("SECRET_KEY", SECRET_KEY)
-
+DEBUG = True
 # Database
 DATABASES = {
+    "test": {
+        "engine": f"sqlite+aiosqlite:///{TEST_DIR}/test_db.sqlite",
+    },
     "default": {
-        "engine": f"sqlite:///{BASE_DIR}/db.sqlite",
-        "sync_engine": f"sqlite:///{TEST_DIR}/db.sqlite",
-    }
+        "path": f"{TEST_DIR}/dev_db.sqlite",
+        "engine": f"sqlite+aiosqlite:///{TEST_DIR}/dev_db.sqlite",
+        "sync_engine": f"sqlite:///{TEST_DIR}/dev_db.sqlite",
+        "config": {
+            "echo": DEBUG,
+        }
+    },
 }

@@ -19,6 +19,7 @@ if "path" in DB:
         logger.info("Creating development database")
         create_db_sync(DB["sync_engine"])
 
+
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
     start_time = time.perf_counter()

@@ -20,7 +20,9 @@ def get_command(command: list = sys.argv[1]):
         test_db.run()
 
     elif command == "runserver":
-        os.system("uvicorn fastbg.server:app --port 5000 --reload")
+        os.system(
+            f"PYTHONPATH={settings.BASE_DIR.parent} uvicorn fastbg.server:app --port 5000 --reload"
+        )
 
 
 if __name__ == "__main__":

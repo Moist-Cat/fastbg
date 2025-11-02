@@ -96,7 +96,7 @@ class PostTags(Base):
 
 class User(Base, SoftDeleteMixin):
     name = Column(String(100), unique=True)
-    pattern_name = re.compile(r"[a-zA-Z0-9_]")
+    pattern_name = re.compile(r"^[a-zA-Z0-9_]+$")
     password = Column(String(255), nullable=False)
 
     posts = relationship("Post", back_populates="author", cascade="all, delete-orphan")
@@ -110,6 +110,12 @@ class User(Base, SoftDeleteMixin):
     def check_password(self, password: str) -> bool:
         return verify_password(password, self.password)
 
+    def __setattr__(self, name, value):
+        if name == "password" and isinstance(value, str):
+            self.set_password(value)
+            return
+
+        return super().__setattr__(name, value)
 
     def __init__(self, **kwargs):
         # avoid breaking the interface for this edge case
@@ -178,6 +184,7 @@ async def drop_db(name=settings.DATABASES["default"]["engine"]):
 
     await engine.dispose()
 
+
 def create_db_sync(name=settings.DATABASES["default"]["engine"]):
     engine = create_engine(name)
     drop_db_sync(name)
@@ -186,6 +193,7 @@ def create_db_sync(name=settings.DATABASES["default"]["engine"]):
 
     print("INFO - Recreated database (sync)")
     return engine
+
 
 def drop_db_sync(name=settings.DATABASES["default"]["engine"]):
     engine = create_engine(name)

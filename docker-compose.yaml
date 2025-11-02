@@ -13,9 +13,7 @@ services:
       - FASTBG_SETTINGS_MODULE=fastbg.conf.dev
       - DEBUG=true
     volumes:
-      - ./src/fastbg:/app/fastbg:ro
-      - ./alembic:/app/alembic:ro
-      - ./scripts:/app/scripts:ro
+      - ./src/fastbg:/app/fastbg
 
 volumes:
   fastbg_data:
