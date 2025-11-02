@@ -12,6 +12,8 @@ logger = logging.getLogger("global")
 
 app = FastAPI(title="FastBG")
 
+# hack to ensure the database is built
+# even if the correct steps aren't followed
 DB = settings.DATABASES["default"]
 if "path" in DB:
     db_path = Path(DB["path"])

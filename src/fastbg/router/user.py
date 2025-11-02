@@ -7,14 +7,11 @@ from pydantic import BaseModel
 
 from fastbg.router.core import make_crud_router, CrudEndpoint, protected
 from fastbg.db import User
-from fastbg.api import get_db, get_current_user
+from fastbg.api import get_db
 from fastbg.auth.security import (
     create_access_token,
-    verify_password,
-    get_password_hash,
     ACCESS_TOKEN_EXPIRE_MINUTES,
 )
-from fastbg.db import User
 from fastbg.query import base_query
 from fastbg.schema import sqlalchemy_to_pydantic
 

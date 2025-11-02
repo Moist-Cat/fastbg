@@ -6,6 +6,7 @@ from fastbg.db import Post
 from fastbg.schema import sqlalchemy_to_pydantic
 from fastbg.auth.authorization import is_owner
 from fastbg.api import get_db, get_current_user
+from fastbg.query import base_query
 
 router = make_crud_router(Post, disabled={CrudEndpoint.UPDATE})
 
@@ -25,7 +26,7 @@ async def update_item(
     db: AsyncSession = Depends(get_db),
     user: "User" = Depends(get_current_user),
 ):
-    result = await db.execute(base_query(model).where(model.id == item_id))
+    result = await db.execute(base_query(Post).where(Post.id == item_id))
     db_item = result.scalar_one_or_none()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")

@@ -1,11 +1,12 @@
+
+import logging
+from functools import wraps
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from typing import List, Type, Any, Optional, Set, Dict
-from functools import wraps
-import logging
+from typing import List, Type, Optional, Set, Dict
 
-from fastbg.auth.authorization import is_owner
 from fastbg.api import get_db, get_current_user
 from fastbg.schema import sqlalchemy_to_pydantic
 from fastbg.query import base_query, query_deleted
@@ -36,7 +37,7 @@ def protected(func):
         except HTTPException as e:
             raise
         except Exception as e:
-            log.error(f"Error: {e}")
+            log.error("Error: %s", str(e))
             # rollback is done in api.py
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Operation failed"
@@ -51,12 +52,9 @@ def make_crud_router(
     create_schema: Type = None,
     update_schema: Type = None,
     prefix: str = None,
-    tags: List[str] = None,
     exclude_fields: List[str] = None,
     exclude_fields_create: List[str] = None,
     exclude_fields_update: List[str] = None,
-    excluded_endpoints: Set[CrudEndpoint] = None,
-    dependencies: Dict[str, str] = None,
     disabled: Dict[str, str] = None,
 ):
     enable_soft_delete = hasattr(model, "is_soft_deleted")

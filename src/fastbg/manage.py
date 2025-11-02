@@ -1,7 +1,8 @@
-from fastbg.db import create_db
-from fastbg.conf import settings
 import sys
 import os
+
+from fastbg.db import create_db
+from fastbg.conf import settings
 
 
 def get_command(command: list = sys.argv[1]):

@@ -1,23 +1,20 @@
 """
 ORM layer for the DB
 """
-import functools
 from datetime import datetime
 import re
 
-from sqlalchemy.orm import declarative_base, relationship, as_declarative, declared_attr
+from sqlalchemy.orm import relationship, as_declarative, declared_attr
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy import (
     Boolean,
     DateTime,
     Integer,
-    Float,
     String,
     Text,
     ForeignKey,
     Column,
-    Table,
 )
 
 from fastbg.conf import settings

@@ -1,11 +1,11 @@
 # stolen from
 # https://github.com/tiangolo/pydantic-sqlalchemy/blob/master/pydantic_sqlalchemy/main.py
-from pydantic import BaseModel, ConfigDict, create_model, Field, field_validator
+from typing import Type, Container, Optional
+import re
+
+from pydantic import BaseModel, create_model, Field
 from sqlalchemy import inspect
 from sqlalchemy.orm import ColumnProperty
-from typing import Type, Container, Optional, Any
-from datetime import datetime
-import re
 
 
 def sqlalchemy_to_pydantic(
@@ -49,7 +49,7 @@ def sqlalchemy_to_pydantic(
 
                 if not python_type:
                     raise ValueError(
-                        f"Couldn't determine type of {type_str} or {db_model}"
+                        f"Couldn't determine type of {column} of {db_model}"
                     )
 
                 field_config = {}
